@@ -188,7 +188,7 @@ function Lab1()
         <br />
         Loading a local image:
         <br />
-        <img id="wd-teslabot" src="images/teslabot.jpg" height="200px" />
+        <img alt="" id="wd-teslabot" src="images/teslabot.jpg" height="200px" />
       </div>
       
       <div id="wd-forms">
