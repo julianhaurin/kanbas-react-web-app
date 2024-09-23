@@ -25,4 +25,8 @@ export default App
 // home page
 // assignments screen (on own)
 // assignments editor screen (on own)
+// account screen (end)
+// deploy main and change branches netlify
+// github link 2.12
+// go over everything
 // 
