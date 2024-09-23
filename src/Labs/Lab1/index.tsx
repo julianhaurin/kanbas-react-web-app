@@ -181,13 +181,14 @@ function Lab1()
         Loading an image from the internet:
         <br />
         <img id="wd-starship" 
+          alt=""
           width="400px"
-         src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
+          src="https://www.staradvertiser.com/wp-content/uploads/2021/08/web1_Starship-gap2.jpg"
         />
         <br />
         Loading a local image:
         <br />
-        <img id="wd-teslabot" src="images/teslabot.jpeg" height="200px" />
+        <img id="wd-teslabot" src="images/teslabot.jpg" height="200px" />
       </div>
       
       <div id="wd-forms">
@@ -310,6 +311,8 @@ function Lab1()
       Please
       <a id="wd-lipsum" href="https://www.lipsum.com">click here</a>
       to get dummy text<br/>
+      
+      <a id="wd-github" href="https://github.com/julianhaurin/kanbas-react-web-app/">Github Link</a>
 
       
     </div>

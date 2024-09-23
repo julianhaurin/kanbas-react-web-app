@@ -8,9 +8,9 @@ function App() {
     <HashRouter>
       <div>
         <Routes>
-          <Route path="/" element={<Navigate to="Labs" />} />
-          <Route path="/Labs/*" element={<Labs />} />
+          <Route path="/" element={<Navigate to="Kanbas" />} />
           <Route path="/Kanbas/*" element={<Kanbas />} />
+          <Route path="/Labs/*" element={<Labs />} />
         </Routes>
       </div>
     </HashRouter>
@@ -20,13 +20,11 @@ function App() {
 export default App
 
 // todo:
-// update courses images
 // modules page
 // home page
 // assignments screen (on own)
 // assignments editor screen (on own)
 // account screen (end)
 // deploy main and change branches netlify
-// github link 2.12
 // go over everything
 // 

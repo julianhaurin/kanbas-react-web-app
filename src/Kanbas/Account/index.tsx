@@ -15,6 +15,7 @@ function Account() {
             <AccountNavigation />
           </td>
           <td valign="top">
+            <h1>Kanbas</h1>
             <Routes>
               <Route path="/" element={<Navigate to="/Kanbas/Account/Signin" />} />
               <Route path="/Signin" element={<Signin />} />
