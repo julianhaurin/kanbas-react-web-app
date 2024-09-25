@@ -9,6 +9,10 @@ import Courses from "./Courses";
 function Kanbas() {
   return (
     <div id="wd-kanbas">
+      <p>Julian Haurin - SEC 01</p>
+      <a href="https://github.com/julianhaurin/kanbas-react-web-app">Github Link</a>
+      <br/>
+      <br/>
       <table>
         <tr>
           <td valign="top">

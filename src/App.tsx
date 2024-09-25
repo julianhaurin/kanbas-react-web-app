@@ -19,12 +19,3 @@ function App() {
 
 export default App
 
-// todo:
-// modules page
-// home page
-// assignments screen (on own)
-// assignments editor screen (on own)
-// account screen (end)
-// deploy main and change branches netlify
-// go over everything
-// 
