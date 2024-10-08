@@ -3,7 +3,7 @@ import { MdDoNotDisturbAlt } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { BiImport } from "react-icons/bi";
 import { LiaFileImportSolid } from "react-icons/lia";
-{/* Find more icons */}
+
 function CourseStatus() {
   return (
     <div id="wd-course-status" style={{ width: "300px" }}>
