@@ -6,16 +6,16 @@ function BootstrapNavigation() {
         <h2>Tabs</h2>
         <ul className="nav nav-tabs">
           <li className="nav-item">
-              <a className="nav-link active" href="">Active</a>
+              <button className="nav-link active">Active</button>
           </li>
           <li className="nav-item">
-              <a className="nav-link" href="">Link</a>
+              <button className="nav-link">Link</button>
           </li>
           <li className="nav-item">
-              <a className="nav-link" href="">Link</a>
+              <button className="nav-link">Link</button>
           </li>
           <li className="nav-item">
-              <a className="nav-link disabled" href="">Disabled</a>
+              <button className="nav-link disabled">Disabled</button>
           </li>
         </ul>
       </div>
@@ -35,9 +35,9 @@ function BootstrapNavigation() {
             <p className="card-text">
               Description
             </p>
-            <a className="btn btn-primary" href="">
+            <button className="btn btn-primary">
               Btn
-            </a>
+            </button>
           </div>
         </div>
       </div>
