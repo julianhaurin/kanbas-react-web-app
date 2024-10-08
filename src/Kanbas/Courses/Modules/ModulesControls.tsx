@@ -31,13 +31,13 @@ function ModulesControls() {
             </a>
           </li>
           <li>
-            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item" href="#">
+            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item">
               <GreenCheckmark />
               Unpublish All Modules and Items
             </a>
           </li>
           <li>
-            <a id="wd-unpublish-modules-only" className="dropdown-item" href="#">
+            <a id="wd-unpublish-modules-only" className="dropdown-item">
               <GreenCheckmark />
               Unpublish Modules Only
             </a>
