@@ -21,7 +21,7 @@ function Assignments() {
       </div>
       
       <div >
-        <div className="align-items-middle p-2 py-4 rounded-1 border border-bottom-0 border-secondary border-3" style={{ background: "#ececec"}}>
+        <div className="align-items-middle p-2 py-4 rounded-0 border border-bottom-0 border-secondary border-3" style={{ background: "#ececec"}}>
           <FaGripVertical className="align-middle"/>
           <MdOutlineArrowDropDown size={30}/>
           <span id="wd-assignments-title" className="fs-5 fw-bold align-middle">ASSIGNMENTS</span>
@@ -39,14 +39,14 @@ function Assignments() {
             <div className="row">
               <div className="col-2 align-self-center">
                 <div>
-                  <FaGripVertical size={30}/>
-                  <FaBook color="green" size={40}/>
+                  <FaGripVertical size={25} className="mx-1"/>
+                  <FaBook color="green" size={25} className="mx-1"/>
                 </div>
               </div>
               <div className="col-8 align-self-center" >
                 <div>
-                  <a className="wd-assignment-link" href="#/Kanbas/Courses/1234/Assignments/123">
-                    A1 - ENV + HTML
+                  <a className="wd-assignment-link text-decoration-none text-black fw-bold h5" href="#/Kanbas/Courses/1234/Assignments/123">
+                    A1
                   </a>
                 </div>
                 <div>
@@ -57,12 +57,12 @@ function Assignments() {
                 </div>
               </div>
               <div className="col-2 align-self-center">
-                <div>
+                <div className="float-end">
                   <span className="">
-                    <FaCheckCircle size={40} className="text-success " />
+                    <FaCheckCircle size={25} className="text-success" />
                   </span>
                   <span className="">
-                    <IoEllipsisVertical size={40} className=""/>
+                    <IoEllipsisVertical size={25} className="mx-3"/>
                   </span>
                 </div>
               </div>
@@ -73,14 +73,14 @@ function Assignments() {
             <div className="row">
               <div className="col-2 align-self-center">
                 <div>
-                  <FaGripVertical size={30}/>
-                  <FaBook color="green" size={40}/>
+                  <FaGripVertical size={25} className="mx-1"/>
+                  <FaBook color="green" size={25} className="mx-1"/>
                 </div>
               </div>
               <div className="col-8 align-self-center" >
                 <div>
-                  <a className="wd-assignment-link" href="#/Kanbas/Courses/1234/Assignments/123">
-                    A2 - ENV + HTML
+                  <a className="wd-assignment-link text-decoration-none text-black fw-bold h5" href="#/Kanbas/Courses/1234/Assignments/123">
+                    A2
                   </a>
                 </div>
                 <div>
@@ -91,12 +91,12 @@ function Assignments() {
                 </div>
               </div>
               <div className="col-2 align-self-center">
-                <div>
+                <div className="float-end">
                   <span className="">
-                    <FaCheckCircle size={40} className="text-success " />
+                    <FaCheckCircle size={25} className="text-success " />
                   </span>
                   <span className="">
-                    <IoEllipsisVertical size={40} className=""/>
+                    <IoEllipsisVertical size={25} className="mx-3"/>
                   </span>
                 </div>
               </div>
@@ -107,14 +107,14 @@ function Assignments() {
             <div className="row">
               <div className="col-2 align-self-center">
                 <div>
-                  <FaGripVertical size={30}/>
-                  <FaBook color="green" size={40}/>
+                  <FaGripVertical size={25} className="mx-1"/>
+                  <FaBook color="green" size={25} className="mx-1"/>
                 </div>
               </div>
               <div className="col-8 align-self-center" >
                 <div>
-                  <a className="wd-assignment-link" href="#/Kanbas/Courses/1234/Assignments/123">
-                    A3 - ENV + HTML
+                  <a className="wd-assignment-link text-decoration-none text-black fw-bold h5" href="#/Kanbas/Courses/1234/Assignments/123">
+                    A3
                   </a>
                 </div>
                 <div>
@@ -125,12 +125,12 @@ function Assignments() {
                 </div>
               </div>
               <div className="col-2 align-self-center">
-                <div>
+                <div className="float-end">
                   <span className="">
-                    <FaCheckCircle size={40} className="text-success " />
+                    <FaCheckCircle size={25} className="text-success " />
                   </span>
                   <span className="">
-                    <IoEllipsisVertical size={40} className=""/>
+                    <IoEllipsisVertical size={25} className="mx-3"/>
                   </span>
                 </div>
               </div>

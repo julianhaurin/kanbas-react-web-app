@@ -12,7 +12,7 @@ function ModulesControls() {
       </button>
       
       <div className="dropdown d-inline me-1 float-end">
-        <button id="wd-publish-all-btn" className="btn btn-lg btn-secondary dropdown-toggle"
+        <button id="wd-publish-all-btn" className="btn btn-lg btn-secondary dropdown-toggle mx-1"
           type="button" data-bs-toggle="dropdown">
           <GreenCheckmark />
           Publish All
@@ -45,11 +45,11 @@ function ModulesControls() {
         </ul>
       </div>
       
-      <button id="wd-view-progress" className="btn btn-lg btn-secondary float-end" type="button">
+      <button id="wd-view-progress" className="btn btn-lg btn-secondary float-end mx-1" type="button">
           View Progress
         </button>
         
-      <button id="wd-collapse-all" className="btn btn-lg btn-secondary float-end" type="button">
+      <button id="wd-collapse-all" className="btn btn-lg btn-secondary float-end mx-1" type="button">
           Collapse All
       </button>
       

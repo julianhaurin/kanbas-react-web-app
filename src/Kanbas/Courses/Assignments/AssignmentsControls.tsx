@@ -8,7 +8,7 @@ function AssignmentsControls() {
       
       {/* Search Bar */}
       <div className="col-6 align-self-center border" style={{height: "45px"}}>
-        <span className="">
+        <span className="" >
           <FaSearch/>
         </span>
         <input type="search" className="border-0 m-2 mb-3 fs-5"  placeholder="Search..."></input>

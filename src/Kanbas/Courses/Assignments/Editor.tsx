@@ -1,19 +1,20 @@
 
 import { FaX } from "react-icons/fa6";
+import { FaCalendarAlt } from "react-icons/fa";
 
 function AssignmentEditor() {
 
   return (
   
-    <div id="wd-assignments-editor" className="p-2 input-group mx-1" style={{maxWidth: 1000}}>
+    <div id="wd-assignments-editor" className="p-2 input-group px-3" style={{maxWidth: 1000}}>
     
       <div className="w-100">
         <label htmlFor="wd-name" className="form-control border-0 ps-0">Assignment Name</label>
         <input id="wd-name" className="rounded-1 border border-secondary p-1 w-100"  value="A1 - ENV + HTML" /><br /><br />
       </div>
       
-      <div className="w-100">
-        <textarea id="wd-description" className="w-100 p-2">
+      <div className="w-100" style={{height: 300}}>
+        <textarea id="wd-description" className="w-100 p-2 h-100">
           The assignment is available online Submit a link to the landing page of your 
           Web application running on Netlify. The landing page should include the following: Your
           full name and section Link to the Kanbasa application Link to all relevant source code
@@ -66,27 +67,27 @@ function AssignmentEditor() {
               
               <span className="fw-bold">Online Entry Options</span>
               
-              <div className="form-check my-2">
+              <div className="form-check my-3">
                 <input type="checkbox" id="wd-text-entry" className="form-check-input"/>
                 <label htmlFor="wd-text-entry" className="form-check-label">Text Entry</label><br/>
               </div>
               
-              <div className="form-check my-2">
+              <div className="form-check my-3">
                 <input type="checkbox" id="wd-website-url" className="form-check-input"/>
                 <label htmlFor="wd-website-url" className="form-check-label">Website URL</label><br/>
               </div>
               
-              <div className="form-check my-2">
+              <div className="form-check my-3">
                 <input type="checkbox" id="wd-media-recordings" className="form-check-input"/>
                 <label htmlFor="wd-media-recordings" className="form-check-label">Media Recordings</label><br/>
               </div>
               
-              <div className="form-check my-2">
+              <div className="form-check my-3">
                 <input type="checkbox" id="wd-student-annotation" className="form-check-input"/>
                 <label htmlFor="wd-student-annotation" className="form-check-label">Student Annotation</label><br/>
               </div>
               
-              <div className="form-check my-2">
+              <div className="form-check my-3">
                 <input type="checkbox" id="wd-file-upload" className="form-check-input"/>
                 <label htmlFor="wd-file-upload" className="form-check-label">File Uploads</label><br/>
               </div>
@@ -111,23 +112,61 @@ function AssignmentEditor() {
               
             </div>
             
-            <label htmlFor="wd-due-date">Due</label>
-            <input type="date" id="wd-due-date"></input>
+            <div>
+              <div>
+                <label htmlFor="wd-due-date"><span className="fw-bold">Due</span></label>
+              </div>
+              <div className="input-group">
+                <input type="date" id="wd-due-date" className="form-control"></input>
+                <div className="input-group-append bg-secondary align-self-center p-3">
+                  <FaCalendarAlt/>
+                </div>
+              </div>
+              
+              <div className="row">
+              
+                <div className="col-6">
+                  <div>
+                    <label htmlFor="wd-available-from"><span className="fw-bold">Available from</span></label>
+                  </div>
+                  <div className="input-group">
+                    <input type="date" id="wd-available-from" className="form-control"></input>
+                    <div className="input-group-append bg-secondary align-self-center p-3">
+                      <FaCalendarAlt/>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="col-6">
+                  <div>
+                    <label htmlFor="wd-available-until"><span className="fw-bold">Until</span></label>
+                  </div>
+                  <div className="input-group">
+                    <input type="date" id="wd-available-until" className="form-control"></input>
+                    <div className="input-group-append bg-secondary align-self-center p-3">
+                      <FaCalendarAlt/>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
             
-            <label htmlFor="wd-available-from">Available from</label>
-            <label htmlFor="wd-available-until">Until</label>
             
-            <input type="date" id="wd-available-from"></input>
-            <input type="date" id="wd-available-until"></input>
+            
+            
+            
+            
             </div>
           </div>
           
 
         <hr />
         
+        
         <div style={{textAlign: 'right'}}>
-          <button>Cancel</button>
-          <button>Save</button>
+          <button className="btn btn-secondary mx-1 border border-secondary rounded-1">Cancel</button>
+          <button className="btn btn-danger mx-1 border border-secondary rounded-1">Save</button>
         </div>
       
       </div>

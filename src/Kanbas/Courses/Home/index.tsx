@@ -8,7 +8,7 @@ function Home() {
       <div className="flex-fill">
         <Modules />
       </div>
-      <div className="d-none d-md-block">
+      <div className="d-none d-md-block mx-4">
         <CourseStatus />
       </div>
     </div>

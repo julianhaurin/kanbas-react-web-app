@@ -8,7 +8,7 @@ function Dashboard() {
       <h2 id="wd-dashboard-published">Published Courses (8)</h2> <hr />
       
       <div id="wd-dashboard-courses" className="row">
-        <div className="row row-cols-1 row-cols-md-5 g-4">
+        <div className="row row-cols-4 row-cols-md-3 g-4 no-wrap">
         
           <div className="wd-dashboard-course col" style={{ width: "300px" }}>
             <div className="card rounded-3 overflow-hidden">
