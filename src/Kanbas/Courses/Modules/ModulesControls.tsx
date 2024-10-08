@@ -19,25 +19,25 @@ function ModulesControls() {
         </button>
         <ul className="dropdown-menu">
           <li>
-            <a id="wd-publish-all-modules-and-items-btn" className="dropdown-item">
+            <a id="wd-publish-all-modules-and-items-btn" className="dropdown-item" href="">
               <GreenCheckmark />
               Publish All Modules and Items
             </a>
           </li>
           <li>
-            <a id="wd-publish-modules-only-button" className="dropdown-item">
+            <a id="wd-publish-modules-only-button" className="dropdown-item" href="">
               <GreenCheckmark />
               Publish Modules Only
             </a>
           </li>
           <li>
-            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item">
+            <a id="wd-unpublish-all-modules-and-items" className="dropdown-item" href="">
               <GreenCheckmark />
               Unpublish All Modules and Items
             </a>
           </li>
           <li>
-            <a id="wd-unpublish-modules-only" className="dropdown-item">
+            <a id="wd-unpublish-modules-only" className="dropdown-item" href="">
               <GreenCheckmark />
               Unpublish Modules Only
             </a>
