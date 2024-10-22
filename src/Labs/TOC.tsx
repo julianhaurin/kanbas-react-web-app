@@ -21,7 +21,7 @@ function TOC() {
         className="nav-item"><Link to="/Kanbas" className="nav-link">Kanbas</Link>
       </li>
       <li className="nav-item">
-        <Link id="wd-k" to="https://github.com/julianhaurin/kanbas-react-web-app" className="nav-link">
+        <Link id="wd-github" to="https://github.com/julianhaurin/kanbas-react-web-app" className="nav-link">
           My GitHub
         </Link>
       </li>
