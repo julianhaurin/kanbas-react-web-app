@@ -1,7 +1,8 @@
 
+import { useParams } from "react-router";
+import * as db from "../../Database";
 
 import AssignmentControls from "./AssignmentsControls"
-
 import AssignmentControlButtons from "./AssignmentControlButtons";
 
 import { FaGripVertical } from "react-icons/fa";
@@ -12,6 +13,9 @@ import { FaBook } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 
 function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
+  
   return(
   
     <div id="wd-assignments" className=" mx-3">
@@ -33,43 +37,46 @@ function Assignments() {
         </div>
         
         <ul id="wd-assignment-list" className="list-group">
-        
           
-          <li className="wd-assignment-list-item list-group-item">
-            <div className="row">
-              <div className="col-2 align-self-center">
-                <div>
-                  <FaGripVertical size={25} className="mx-1"/>
-                  <FaBook color="green" size={25} className="mx-1"/>
-                </div>
-              </div>
-              <div className="col-8 align-self-center" >
-                <div>
-                  <a className="wd-assignment-link text-decoration-none text-black fw-bold h5" href="#/Kanbas/Courses/1234/Assignments/123">
-                    A1
-                  </a>
-                </div>
-                <div>
-                  <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am | 
-                </div>
-                <div>
-                  <b>Due</b> May 13 at 11:59pm | 100 pts
-                </div>
-              </div>
-              <div className="col-2 align-self-center">
-                <div className="float-end">
-                  <span className="">
-                    <FaCheckCircle size={25} className="text-success" />
-                  </span>
-                  <span className="">
-                    <IoEllipsisVertical size={25} className="mx-3"/>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </li>
+          {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
           
-          <li className="wd-assignment-list-item list-group-item">
+            <li className="wd-assignment-list-item list-group-item">
+              <div className="row">
+                <div className="col-2 align-self-center">
+                  <div>
+                    <FaGripVertical size={25} className="mx-1"/>
+                    <FaBook color="green" size={25} className="mx-1"/>
+                  </div>
+                </div>
+                <div className="col-8 align-self-center" >
+                  <div>
+                    <a className="wd-assignment-link text-decoration-none text-black fw-bold h5" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                      {assignment.title}
+                    </a>
+                  </div>
+                  <div>
+                    <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am | 
+                  </div>
+                  <div>
+                    <b>Due</b> May 13 at 11:59pm | 100 pts
+                  </div>
+                </div>
+                <div className="col-2 align-self-center">
+                  <div className="float-end">
+                    <span className="">
+                      <FaCheckCircle size={25} className="text-success" />
+                    </span>
+                    <span className="">
+                      <IoEllipsisVertical size={25} className="mx-3"/>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          
+          ))}
+          
+          {/* <li className="wd-assignment-list-item list-group-item">
             <div className="row">
               <div className="col-2 align-self-center">
                 <div>
@@ -135,7 +142,7 @@ function Assignments() {
                 </div>
               </div>
             </div>
-          </li>
+          </li> */}
 
           
         </ul>

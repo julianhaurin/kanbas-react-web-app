@@ -1,25 +1,31 @@
 
+import { useParams } from "react-router";
+import * as db from "../../Database";
+
+import { Link } from "react-router-dom";
+
 import { FaX } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
 
 function AssignmentEditor() {
-
-  return (
+  const { cid, aid } = useParams();
+  const assignments = db.assignments;
   
+  const currAssignments = assignments.filter((assignment: any) => assignment.course === cid && assignment._id === aid)
+  let currAssignment = currAssignments[0]
+  
+  return (
+    
     <div id="wd-assignments-editor" className="p-2 input-group px-3" style={{maxWidth: 1000}}>
     
       <div className="w-100">
         <label htmlFor="wd-name" className="form-control border-0 ps-0">Assignment Name</label>
-        <input id="wd-name" className="rounded-1 border border-secondary p-1 w-100"  value="A1 - ENV + HTML" /><br /><br />
+        <input id="wd-name" className="rounded-1 border border-secondary p-1 w-100"  value={currAssignment.title} /><br /><br />
       </div>
       
       <div className="w-100" style={{height: 300}}>
         <textarea id="wd-description" className="w-100 p-2 h-100">
-          The assignment is available online Submit a link to the landing page of your 
-          Web application running on Netlify. The landing page should include the following: Your
-          full name and section Link to the Kanbasa application Link to all relevant source code
-          repositories. The Kanbas application should include a link to navigate back to 
-          the landing page. 
+          {currAssignment.description}
         </textarea>
       </div>
       
@@ -117,7 +123,7 @@ function AssignmentEditor() {
                 <label htmlFor="wd-due-date"><span className="fw-bold">Due</span></label>
               </div>
               <div className="input-group">
-                <input type="date" id="wd-due-date" className="form-control"></input>
+                <input type="" id="wd-due-date" className="form-control" value={currAssignment.due_date}></input>
                 <div className="input-group-append bg-secondary align-self-center p-3">
                   <FaCalendarAlt/>
                 </div>
@@ -130,7 +136,7 @@ function AssignmentEditor() {
                     <label htmlFor="wd-available-from"><span className="fw-bold">Available from</span></label>
                   </div>
                   <div className="input-group">
-                    <input type="date" id="wd-available-from" className="form-control"></input>
+                    <input type="" id="wd-available-from" className="form-control" value={currAssignment.available_date}></input>
                     <div className="input-group-append bg-secondary align-self-center p-3">
                       <FaCalendarAlt/>
                     </div>
@@ -142,7 +148,7 @@ function AssignmentEditor() {
                     <label htmlFor="wd-available-until"><span className="fw-bold">Until</span></label>
                   </div>
                   <div className="input-group">
-                    <input type="date" id="wd-available-until" className="form-control"></input>
+                    <input type="" id="wd-available-until" className="form-control" value={currAssignment.until_date}></input>
                     <div className="input-group-append bg-secondary align-self-center p-3">
                       <FaCalendarAlt/>
                     </div>
@@ -165,8 +171,12 @@ function AssignmentEditor() {
         
         
         <div style={{textAlign: 'right'}}>
-          <button className="btn btn-secondary mx-1 border border-secondary rounded-1">Cancel</button>
-          <button className="btn btn-danger mx-1 border border-secondary rounded-1">Save</button>
+          <button className="btn">
+            <Link  id="wd-signin-btn" to={`/Kanbas/Courses/${cid}/Assignments`}><span className="btn btn-secondary border border-secondary rounded-1">Cancel</span></Link>
+          </button>
+          <button className="btn">
+            <Link  id="wd-signin-btn" to={`/Kanbas/Courses/${cid}/Assignments`}><span className="btn btn-danger border border-secondary rounded-1">Save</span></Link>
+          </button>
         </div>
       
       </div>
