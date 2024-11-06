@@ -19,7 +19,7 @@ export default function Profile() {
       // fetch profile func
       if (!currentUser) return navigate("/Kanbas/Account/Signin");
       setProfile(currentUser);
-  }, []);
+  }, [currentUser, navigate]);
   
   return (
     <div id="wd-profile-screen">
