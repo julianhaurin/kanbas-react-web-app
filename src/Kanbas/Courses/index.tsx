@@ -12,7 +12,7 @@ import { courses } from "../Database";
 
 import { FaAlignJustify } from "react-icons/fa";
 
-function Courses() {
+function Courses({ courses }: { courses: any[]; }) {
   const { cid } = useParams();
   const { pathname } = useLocation();
   const course = courses.find((course) => course._id === cid);

@@ -18,6 +18,9 @@ function TOC() {
         className="nav-item"><Link to="/Labs/Lab3" className={`nav-link ${pathname.includes("Lab3") ? "active" : ""}`}>Lab 3</Link>
       </li>
       <li 
+        className="nav-item"><Link to="/Labs/Lab4" className={`nav-link ${pathname.includes("Lab4") ? "active" : ""}`}>Lab 4</Link>
+      </li>
+      <li 
         className="nav-item"><Link to="/Kanbas" className="nav-link">Kanbas</Link>
       </li>
       <li className="nav-item">

@@ -1,7 +1,22 @@
 
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { setCurrentUser } from "./reducer";
+import { useDispatch } from "react-redux";
+import * as db from "../Database";
 
 function Signin() {
+  const [credentials, setCredentials] = useState<any>({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const signin = () => {
+    const user = db.users.find(
+      (u: any) => u.username === credentials.username && u.password === credentials.password);
+    if (!user) return;
+    dispatch(setCurrentUser(user));
+    navigate("/Kanbas/Dashboard");
+  };
+
   return (
     <div id="wd-signin-screen">
     
@@ -9,16 +24,14 @@ function Signin() {
       
       <div className="d-flex flex-column form-group justify-content-center w-25">
       
-        <div className="m-1">
-          <input className="wd-username rounded-2 border-secondary form-control" placeholder="username"/>
-        </div>
-        <div className="m-1 ">
-          <input className="wd-password rounded-2 border-secondary form-control" placeholder="password" type="password"/>
-        </div>
-        
-        <button className="btn btn-primary">
-          <Link  id="wd-signin-btn" to="/Kanbas/Dashboard"><span className="text-white">Sign in</span></Link>
-        </button>
+        <input defaultValue={credentials.username}
+               onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
+               className="form-control mb-2" placeholder="username" id="wd-username" />
+        <input defaultValue={credentials.password}
+               onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+               className="form-control mb-2" placeholder="password" type="password" id="wd-password" />
+        <button onClick={signin} id="wd-signin-btn" className="btn btn-primary w-100" > Sign in </button>
+
         
       </div>
       

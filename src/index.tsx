@@ -18,13 +18,7 @@ root.render(
 
 reportWebVitals();
 
-// TODO:
-// make sure side navbar updates when sections are selectd
-// dont let course cards become super narrow (?) 4.2?
-// Finish modules controls 4.4
-// bsplus has addotional class name 4.4 originally in module index.tsx
-// home page status icons 4.5
-// some module icons needs to be black (currently white)
-// name / section to landing page?
-// align-self-center ***
+// 3.4.4 on your own part
+// 3.5
+// 3.6
 
