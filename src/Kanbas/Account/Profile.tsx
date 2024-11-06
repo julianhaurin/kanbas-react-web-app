@@ -15,11 +15,10 @@ export default function Profile() {
     dispatch(setCurrentUser(null));
     navigate("/Kanbas/Account/Signin");
   };
-  useEffect(() => { () => {
+  useEffect(() => {
       // fetch profile func
       if (!currentUser) return navigate("/Kanbas/Account/Signin");
       setProfile(currentUser);
-    }; 
   }, []);
   
   return (
