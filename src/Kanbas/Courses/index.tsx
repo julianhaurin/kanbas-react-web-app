@@ -8,7 +8,7 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "./People/PeopleTable";
 
-import { courses } from "../Database";
+// import { courses } from "../Database";
 
 import { FaAlignJustify } from "react-icons/fa";
 

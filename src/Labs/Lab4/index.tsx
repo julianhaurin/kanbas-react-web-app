@@ -12,7 +12,6 @@ import ArrayStateVariable from "./ArrayStateVariable";
 import ParentStateComponent from "./ParentStateComponent";
 
 import ReduxExamples from "./ReduxExamples";
-import { useSelector } from "react-redux";
 
 function sayHello() {
   alert("Hello");
