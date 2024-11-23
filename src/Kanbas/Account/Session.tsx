@@ -19,7 +19,7 @@ export default function Session({ children }: { children: any }) {
       setPending(false);
     };
     fetchProfile();
-  }, []);
+  }, [dispatch]);
   
   if (!pending) {
     return children;

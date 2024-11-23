@@ -33,7 +33,7 @@ function Modules() {
       dispatch(setModules(modules));
     };
     fetchModules();
-  }, []);
+  }, [cid, dispatch]);
   
   const createModuleForCourse = async () => {
     if (!cid) return;

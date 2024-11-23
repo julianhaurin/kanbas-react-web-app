@@ -43,7 +43,7 @@ function Assignments() {
       }
     };
     fetchAssignments();
-  }, [currentUser]);
+  }, [currentUser, cid]);
   
   const createAssignmentForCourse = async () => {
     if (!cid) return;
