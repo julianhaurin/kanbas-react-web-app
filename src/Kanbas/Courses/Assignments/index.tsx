@@ -1,26 +1,34 @@
 
 import { useParams } from "react-router";
-// import * as db from "../../Database";
+// import * as db from "../../Database"; 
 import { useEffect, useState   } from "react";
 
 import AssignmentControls from "./AssignmentsControls"
+import AssignmentsControlButtons from "./AssignmentsControlButtons";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 
 import { FaGripVertical } from "react-icons/fa";
 import { MdOutlineArrowDropDown } from "react-icons/md";
-// import GreenCheckmark from "../Modules/GreenCheckmark";
-import { IoEllipsisVertical } from "react-icons/io5";
 import { FaBook } from "react-icons/fa";
-import { FaCheckCircle } from "react-icons/fa";
+// import GreenCheckmark from "../Modules/GreenCheckmark";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import * as coursesClient from "../client";
 // import * as assignmentClient from "./client";
 
+import { setAssignments, addAssignment, editAssignment, updateAssignment, deleteAssignment } from "./reducer";
+
+
 function Assignments() {
-  const { cid, aid } = useParams();
-  const [assignments, setAssignments] = useState<any[]>([]);
+  
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  //  const [assignments, setAssignments] = useState<any[]>(db.assignments); // remove *****
+  
+  const { cid } = useParams();
+ 
+  const [assignmentName, setAssignmentName] = useState("");
   // const assignments = db.assignments;
   
   const { currentUser } = useSelector((state: any) => state.accountReducer);
@@ -37,11 +45,17 @@ function Assignments() {
   }, [currentUser]);
   
   const createAssignmentForCourse = async () => {
-    if (!cid || !aid) return;
-    const newAssignment = { id: aid, course: cid };
+    if (!cid) return;
+    const newAssignment = { title: assignmentName, course: cid };
     const assignments = await coursesClient.createAssignmentForCourse(cid, newAssignment);
-    setAssignments(assignments)
+    dispatch(addAssignment(assignments));
   };
+  
+  const removeAssignment = (assignment: any) => {
+    // setAssignments(assignments.filter((a : any) => a._id !== assignmentID));
+    dispatch(deleteAssignment(assignment))
+  };
+
 
 
   
@@ -50,7 +64,11 @@ function Assignments() {
     <div id="wd-assignments" className=" mx-3">
     
       <div className="my-2 ms-3">
-        <AssignmentControls/>
+        <AssignmentControls
+          setAssignmentName={setAssignmentName} 
+          assignmentName={assignmentName} 
+          addAssignment={createAssignmentForCourse}
+        />
       </div>
       
       <div >
@@ -61,7 +79,7 @@ function Assignments() {
           
           <span className="float-end">
             <span className="border border-secondary rounded-4 p-2 align-middle">40% of Total</span>
-            <span className="align-middle p-2"><AssignmentControlButtons/></span>
+            <span className="align-middle p-2"><AssignmentsControlButtons/></span>
           </span>
         </div>
         
@@ -92,12 +110,7 @@ function Assignments() {
                 </div>
                 <div className="col-2 align-self-center">
                   <div className="float-end">
-                    <span className="">
-                      <FaCheckCircle size={25} className="text-success" />
-                    </span>
-                    <span className="">
-                      <IoEllipsisVertical size={25} className="mx-3"/>
-                    </span>
+                    <AssignmentControlButtons assignmentID={assignment._id} deleteAssignment={removeAssignment} />
                   </div>
                 </div>
               </div>

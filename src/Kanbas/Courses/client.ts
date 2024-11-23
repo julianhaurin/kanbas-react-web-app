@@ -3,9 +3,10 @@ import axios from "axios";
 
 const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
 const COURSES_API = `${REMOTE_SERVER}/api/courses`;
+const ENROLLMENT_API = `${REMOTE_SERVER}/api/enrollments`;
 
 export const fetchAllCourses = async () => {
-  console.log("FETCHING COURSES FROM " + COURSES_API)
+  // console.log("FETCHING COURSES FROM " + COURSES_API)
   const { data } = await axios.get(COURSES_API);
   return data;
 };
@@ -49,6 +50,23 @@ export const createAssignmentForCourse = async (courseId: string, assignment: an
   );
   return response.data;
 };
+
+// TODO: add to separate file, finalize routes
+// enrollments
+
+export const enrollUserInCourse = async (userID : string, courseID : string) => {
+  const response = await axios.put(
+    `${ENROLLMENT_API}/${userID}/${courseID}`
+  );
+  return response.data;
+}
+
+export const unenrollUserInCourse = async (userID : string, courseID : string) => {
+  const response = await axios.delete(
+    `${ENROLLMENT_API}/${userID}/${courseID}`
+  );
+  return response.data;
+}
 
 
 

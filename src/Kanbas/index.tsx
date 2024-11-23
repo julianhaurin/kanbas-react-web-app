@@ -10,7 +10,7 @@ import Dashboard from "./Dashboard";
 import Courses from "./Courses";
 
 // import * as db from "./Database";
-import * as client from "./Courses/client";
+// import * as client from "./Courses/client";
 import * as userClient from "./Account/client";
 import * as courseClient from "./Courses/client";
 
@@ -85,6 +85,7 @@ function Kanbas() {
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}
+                    updateCourses={fetchCourses}
                   />
                 </ProtectedRoute>}/>
               <Route path="/Courses/:cid/*" element={<ProtectedRoute><Courses courses={courses} /></ProtectedRoute> } />

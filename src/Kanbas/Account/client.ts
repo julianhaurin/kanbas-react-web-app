@@ -32,11 +32,20 @@ export const signout = async () => {
 };
 
 export const findMyCourses = async () => {
-  console.log("FIND MY COURSES ACCOUNT at " + `${USERS_API}/current/courses`)
-  console.log("axios with credentials: " + axiosWithCredentials)
   const { data } = await axiosWithCredentials.get(`${USERS_API}/current/courses`);
   return data;
 };
+
+export const findMyRole = async () => {
+  const { data } = await axiosWithCredentials.get(`${USERS_API}/current/role`);
+  return data;
+}
+
+export const findMyID = async () => {
+  const { data } = await axiosWithCredentials.get(`${USERS_API}/current/id`);
+  console.log("got user id: " + data)
+  return data;
+}
 
 export const createCourse = async (course: any) => {
   const { data } = await axiosWithCredentials.post(`${USERS_API}/current/courses`, course);

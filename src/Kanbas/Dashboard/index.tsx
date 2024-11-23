@@ -1,17 +1,49 @@
 
-// import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 // import * as db from "../Database";
 
+import * as courseClient from "../Courses/client"
+import * as userClient from "../Account/client";
+
 function Dashboard({ 
-  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: {
+  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, updateCourses }: {
   courses: any[]; course: any; setCourse: (course: any) => void;
   addNewCourse: () => void; deleteCourse: (course: any) => void;
-  updateCourse: () => void; }) 
+  updateCourse: () => void; 
+  updateCourses: () => void; })
   
   {
+    
+    const [role, setRole] = useState<string>("");
+    const [userID, setUserID] = useState<string>("");
+    const { currentUser } = useSelector((state: any) => state.accountReducer);
+    
+    const fetchRole = async () => {
+      try {
+        const role = await userClient.findMyRole();
+        setRole(role);
+      } catch (error) {
+        console.log("ERROR fetching role")
+        console.error(error);
+      }
+    };
+    
+    const fetchId = async () => {
+      try {
+        const userID = await userClient.findMyID();
+        setUserID(userID);
+      } catch (error) {
+        console.log("ERROR fetching id")
+        console.error(error);
+      }
+    };
+    
+    useEffect(() => { fetchRole(); }, [currentUser]);
+    useEffect(() => { fetchId(); }, [currentUser]);
   
   // const [courses, setCourses] = useState<any[]>(db.courses);
   // const [course, setCourse] = useState<any>({
@@ -40,12 +72,75 @@ function Dashboard({
   //   );
   // };
   
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  // const { currentUser } = useSelector((state: any) => state.accountReducer);
   // const { enrollments } = db;
+  
+  const [allCourses, setAllCourses] = useState<any>(courseClient.fetchAllCourses())
+  const [displayEnrollmentOptions, setDisplayEnrollmentOptions] = useState<boolean>(false);
+  
+  const enrollStudent = async (userID : string, courseID : string) => {
+    console.log("test1")
+    await courseClient.enrollUserInCourse(userID, courseID)
+    console.log("test2")
+    updateCourses()
+  }
+  
+  const unenrollStudent = async (userID : string, courseID : string) => {
+    await courseClient.unenrollUserInCourse(userID, courseID)
+    updateCourses()
+  }
 
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      
+      <p>role : {role}</p>
+      <div>
+        <h5>
+          { (role === "STUDENT") && 
+            <button 
+              className="btn btn-primary" id="wd-add-new-course-click" 
+              onClick={async () => { 
+                setAllCourses(await courseClient.fetchAllCourses()); 
+                setDisplayEnrollmentOptions(!displayEnrollmentOptions); 
+                console.log(displayEnrollmentOptions) }}>
+              Enrollments 
+            </button> }
+        </h5>
+        
+        <div>
+          {displayEnrollmentOptions && Array.from(allCourses).map((course : any) => (
+            <div>
+              <span className="fs-3 my-4">{course.name}</span>
+              
+              {
+                courses.some(x => x._id === course._id) ? 
+                <span>
+                {/* hacky, fix */}
+                  <div className="btn btn-danger float-end" onClick={() => { unenrollStudent(userID, course._id); setAllCourses(courseClient.fetchAllCourses()); setDisplayEnrollmentOptions(!displayEnrollmentOptions) }}>
+                    Unenroll
+                  </div>
+                </span> :
+                
+                <span>
+                  <div className="btn btn-primary float-end" onClick={() => { enrollStudent(userID, course._id); setAllCourses(courseClient.fetchAllCourses()); setDisplayEnrollmentOptions(!displayEnrollmentOptions) }}>
+                    Enroll
+                  </div>
+                </span>
+              }
+              <span>
+                
+              </span>
+              
+            </div>
+            
+          ))}
+        </div>
+        
+      </div>
+      
+      <hr />
+      
       <h5>New Course
           <button className="btn btn-primary float-end"
                   id="wd-add-new-course-click"
@@ -98,132 +193,6 @@ function Dashboard({
               </div>
             </div>
           ))}
-          
-          {/* <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1235/Home">
-                <img alt="" src="/images/Dashboard/course2.avif"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1235
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1236/Home">
-                <img alt="" src="/images/Dashboard/course3.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1236
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1237/Home">
-                <img alt="" src="/images/Dashboard/course4.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1237
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1238/Home">
-                <img alt="" src="/images/Dashboard/course5.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1238
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1239/Home">
-                <img alt="" src="/images/Dashboard/course6.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1239
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark"
-                    to="/Kanbas/Courses/1240/Home">
-                <img alt="" src="/images/Dashboard/course7.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1240
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div>
-          
-          <div className="wd-dashboard-course col" style={{ width: "300px" }}>
-            <div className="card rounded-3 overflow-hidden">
-              <Link className="wd-dashboard-course-link text-decoration-none text-dark  "
-                    to="/Kanbas/Courses/1241/Home">
-                <img alt="" src="/images/Dashboard/course8.jpg"  width="100%" height={160} />
-                <div className="card-body">
-                  <h5 className="wd-dashboard-course-title card-title">
-                    CS1241
-                  </h5>
-                  <p className="wd-dashboard-course-title card-text">
-                    Fall 2024 SEC 01
-                  </p>
-                  <button className="btn btn-primary"> Go </button>
-                </div>
-              </Link>
-            </div>
-          </div> */}
           
         </div>
       </div>
