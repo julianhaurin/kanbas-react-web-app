@@ -3,14 +3,15 @@
 import { Link } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-import * as db from "../Database";
+// import * as db from "../Database";
 
 function Dashboard({ 
-  courses, course, setCourse, addNewCourse,
-  deleteCourse, updateCourse }: {
+  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: {
   courses: any[]; course: any; setCourse: (course: any) => void;
   addNewCourse: () => void; deleteCourse: (course: any) => void;
-  updateCourse: () => void; }) {
+  updateCourse: () => void; }) 
+  
+  {
   
   // const [courses, setCourses] = useState<any[]>(db.courses);
   // const [course, setCourse] = useState<any>({
@@ -40,7 +41,7 @@ function Dashboard({
   // };
   
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const { enrollments } = db;
+  // const { enrollments } = db;
 
   return (
     <div id="wd-dashboard">
@@ -61,12 +62,7 @@ function Dashboard({
       
       <div id="wd-dashboard-courses" className="row">
         <div className="row row-cols-4 row-cols-md-3 g-4 no-wrap">
-          {courses.filter((course) =>
-            enrollments.some(
-              (enrollment) =>
-                enrollment.user === currentUser._id &&
-                enrollment.course === course._id
-               )).map((course) => (
+          {courses.map((course) => (
             <div className="wd-dashboard-course col" style={{ width: "300px" }}>
               <div className="card rounded-3 overflow-hidden">
                 <Link className="wd-dashboard-course-link text-decoration-none text-dark"

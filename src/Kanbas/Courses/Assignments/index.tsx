@@ -1,6 +1,7 @@
 
 import { useParams } from "react-router";
-import * as db from "../../Database";
+// import * as db from "../../Database";
+import { useEffect, useState   } from "react";
 
 import AssignmentControls from "./AssignmentsControls"
 import AssignmentControlButtons from "./AssignmentControlButtons";
@@ -12,9 +13,37 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { FaBook } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 
+import { useSelector } from "react-redux";
+
+import * as coursesClient from "../client";
+// import * as assignmentClient from "./client";
+
 function Assignments() {
-  const { cid } = useParams();
-  const assignments = db.assignments;
+  const { cid, aid } = useParams();
+  const [assignments, setAssignments] = useState<any[]>([]);
+  // const assignments = db.assignments;
+  
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const fetchAssignments = async () => {
+    try {
+      const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+      setAssignments(assignments);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchAssignments();
+  }, [currentUser]);
+  
+  const createAssignmentForCourse = async () => {
+    if (!cid || !aid) return;
+    const newAssignment = { id: aid, course: cid };
+    const assignments = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+    setAssignments(assignments)
+  };
+
+
   
   return(
   
@@ -38,7 +67,7 @@ function Assignments() {
         
         <ul id="wd-assignment-list" className="list-group">
           
-          {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
+          {assignments.map((assignment: any) => (
           
             <li className="wd-assignment-list-item list-group-item">
               <div className="row">
