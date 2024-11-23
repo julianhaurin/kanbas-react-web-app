@@ -26,13 +26,14 @@ function Modules() {
     dispatch(deleteModule(moduleId));
   };
   
-  const fetchModules = async () => {
-    const modules = await coursesClient.findModulesForCourse(cid as string);
-    dispatch(setModules(modules));
-  };
+  
   useEffect(() => {
+    const fetchModules = async () => {
+      const modules = await coursesClient.findModulesForCourse(cid as string);
+      dispatch(setModules(modules));
+    };
     fetchModules();
-  }, [fetchModules]);
+  }, []);
   
   const createModuleForCourse = async () => {
     if (!cid) return;

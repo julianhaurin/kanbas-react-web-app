@@ -32,17 +32,18 @@ function Assignments() {
   // const assignments = db.assignments;
   
   const { currentUser } = useSelector((state: any) => state.accountReducer);
-  const fetchAssignments = async () => {
-    try {
-      const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
-      setAssignments(assignments);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
   useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+        setAssignments(assignments);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     fetchAssignments();
-  }, [currentUser, fetchAssignments]);
+  }, [currentUser]);
   
   const createAssignmentForCourse = async () => {
     if (!cid) return;
