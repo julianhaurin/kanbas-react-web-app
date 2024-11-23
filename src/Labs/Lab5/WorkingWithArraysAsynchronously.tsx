@@ -49,6 +49,7 @@ export default function WorkingWithArraysAsynchronously() {
       setTodos(todos.map((t) => (t.id === todo.id ? todo : t)));
     } catch (error: any) {
       setErrorMessage(error.response.data.message);
+      console.log(errorMessage)
     }
   };
 

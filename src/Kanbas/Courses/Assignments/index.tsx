@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as coursesClient from "../client";
 // import * as assignmentClient from "./client";
 
-import { setAssignments, addAssignment, editAssignment, updateAssignment, deleteAssignment } from "./reducer";
+import { setAssignments, addAssignment, deleteAssignment } from "./reducer"; // editAssignment, updateAssignment,
 
 
 function Assignments() {
@@ -42,7 +42,7 @@ function Assignments() {
   };
   useEffect(() => {
     fetchAssignments();
-  }, [currentUser]);
+  }, [currentUser, fetchAssignments]);
   
   const createAssignmentForCourse = async () => {
     if (!cid) return;
