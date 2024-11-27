@@ -21,9 +21,9 @@ function Account() {
         <h1>Kanbas</h1>
         <Routes>
           <Route path="/" element={<Navigate to={currentUser ? "/Kanbas/Account/Profile" : "/Kanbas/Account/Signin"}  />} />
-          <Route path="/Signin" element={<Signin />} />
+          <Route path="/Signin" element={currentUser ? <Navigate to="/Kanbas/Account/Profile" /> : <Signin />} />
           <Route path="/Profile" element={<Profile />} />
-          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Signup" element={currentUser ? <Navigate to="/Kanbas/Account/Profile" /> : <Signup />} />
         </Routes>
       </div>
     </div>

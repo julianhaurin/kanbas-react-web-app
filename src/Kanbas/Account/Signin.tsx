@@ -10,11 +10,16 @@ function Signin() {
   const [credentials, setCredentials] = useState<any>({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const signin = async () => {
-    const user = await client.signin(credentials);
-    if (!user) return;
-    dispatch(setCurrentUser(user));
-    navigate("/Kanbas/Dashboard");
+    try {
+      const user = await client.signin(credentials);
+      if (!user) return;
+      dispatch(setCurrentUser(user));
+      navigate("/Kanbas/Dashboard");
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (

@@ -16,20 +16,21 @@ import { useSelector, useDispatch } from "react-redux";
 
 import * as coursesClient from "../client";
 // import * as assignmentClient from "./client";
+import * as userClient from "../../Account/client";
 
 import { setAssignments, addAssignment, deleteAssignment } from "./reducer"; // editAssignment, updateAssignment,
 
 
 function Assignments() {
   
-  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  let { assignments } = useSelector((state: any) => state.assignmentsReducer);
+  
   const dispatch = useDispatch();
-  //  const [assignments, setAssignments] = useState<any[]>(db.assignments); // remove *****
   
   const { cid } = useParams();
+  assignments = assignments.filter((x : any) => x.course === cid) // todo: change this so fetchassignments actually works
  
   const [assignmentName, setAssignmentName] = useState("");
-  // const assignments = db.assignments;
   
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   
@@ -37,6 +38,7 @@ function Assignments() {
     const fetchAssignments = async () => {
       try {
         const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+        console.log(assignments)
         setAssignments(assignments);
       } catch (error) {
         console.error(error);
@@ -48,14 +50,28 @@ function Assignments() {
   const createAssignmentForCourse = async () => {
     if (!cid) return;
     const newAssignment = { title: assignmentName, course: cid };
-    const assignments = await coursesClient.createAssignmentForCourse(cid, newAssignment);
-    dispatch(addAssignment(assignments));
+    const tempAssignments = await coursesClient.createAssignmentForCourse(cid, newAssignment);
+    dispatch(addAssignment(tempAssignments));
   };
   
   const removeAssignment = (assignment: any) => {
-    // setAssignments(assignments.filter((a : any) => a._id !== assignmentID));
     dispatch(deleteAssignment(assignment))
   };
+  
+  // todo: copied from dashboard code, remove here
+  const [role, setRole] = useState<string>("");
+  
+  const fetchRole = async () => {
+    try {
+      const role = await userClient.findMyRole();
+      setRole(role);
+    } catch (error) {
+      console.log("ERROR fetching role")
+      console.error(error);
+    }
+  };
+  
+  useEffect(() => { fetchRole(); }, []);
 
 
 
@@ -66,6 +82,7 @@ function Assignments() {
     
       <div className="my-2 ms-3">
         <AssignmentControls
+          role={role}
           setAssignmentName={setAssignmentName} 
           assignmentName={assignmentName} 
           addAssignment={createAssignmentForCourse}
@@ -87,7 +104,7 @@ function Assignments() {
         <ul id="wd-assignment-list" className="list-group">
           
           {assignments.map((assignment: any) => (
-          
+            
             <li className="wd-assignment-list-item list-group-item">
               <div className="row">
                 <div className="col-2 align-self-center">
@@ -103,15 +120,18 @@ function Assignments() {
                     </a>
                   </div>
                   <div>
-                    <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> May 6 at 12:00am | 
+                    <span className="text-danger">Multiple Modules</span> | <b>Not available until</b> {assignment.available_date ? assignment.available_date : "No Date Set"} | 
                   </div>
                   <div>
-                    <b>Due</b> May 13 at 11:59pm | 100 pts
+                    <b>Due</b> {assignment.due_date ? assignment.due_date : "No Date Set"} | 100 pts
                   </div>
                 </div>
                 <div className="col-2 align-self-center">
                   <div className="float-end">
-                    <AssignmentControlButtons assignmentID={assignment._id} deleteAssignment={removeAssignment} />
+                    {
+                      (role === "FACULTY") &&
+                      <AssignmentControlButtons assignmentID={assignment._id} deleteAssignment={removeAssignment} />
+                    }
                   </div>
                 </div>
               </div>

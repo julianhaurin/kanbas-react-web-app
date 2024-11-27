@@ -21,6 +21,11 @@ export const updateUser = async (user: any) => {
   return response.data;
 };
 
+export const getCurrentUserData = async () => {
+  const response = await axiosWithCredentials.get(`${USERS_API}/current/data`);
+  return response.data;
+};
+
 export const profile = async () => {
   const response = await axiosWithCredentials.post(`${USERS_API}/profile`);
   return response.data;
@@ -38,6 +43,13 @@ export const findMyCourses = async () => {
 
 export const findMyRole = async () => {
   const { data } = await axiosWithCredentials.get(`${USERS_API}/current/role`);
+  console.log("got role data: " + JSON.stringify(data))
+  return data;
+}
+
+export const findMyRoleWithID = async ( uid : string ) => {
+  const { data } = await axiosWithCredentials.get(`${USERS_API}/${uid}/role`);
+  console.log("got role with id data: " + JSON.stringify(data))
   return data;
 }
 

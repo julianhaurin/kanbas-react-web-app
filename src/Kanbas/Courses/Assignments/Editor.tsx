@@ -1,18 +1,44 @@
 
 import { useParams } from "react-router";
-import * as db from "../../Database";
+// import * as db from "../../Database";
+
+import { useState, useEffect } from "react";
+// import { useSelector, useDispatch } from "react-redux";
 
 import { Link } from "react-router-dom";
 
 import { FaX } from "react-icons/fa6";
 import { FaCalendarAlt } from "react-icons/fa";
 
+import * as coursesClient from "../client";
+
 function AssignmentEditor() {
   const { cid, aid } = useParams();
-  const assignments = db.assignments;
+  // const assignments = // db.assignments;
   
-  const currAssignments = assignments.filter((assignment: any) => assignment.course === cid && assignment._id === aid)
-  let currAssignment = currAssignments[0]
+  const [currAssignment, setCurrAssignment] = useState<any>();
+  
+  useEffect(() => {
+    const getAssignmentAsync = async () => {
+      const assignments = await coursesClient.findAssignmentsForCourse(cid as string)
+      console.log(assignments)
+      const currAssignments = assignments.filter((assignment: any) => assignment.course === cid && assignment._id === aid)
+      if (currAssignments.length < 1) {
+        console.error("COULD NOT FIND ASSIGNMENT " + cid + " : " + aid)
+        return
+      }
+      setCurrAssignment(currAssignments[0])
+    }
+    
+    getAssignmentAsync();
+    
+  }, [])
+  
+  
+  
+  
+  // const currAssignments = assignments.filter((assignment: any) => assignment.course === cid && assignment._id === aid)
+  // let currAssignment = currAssignments[0]
   
   return (
     
@@ -20,12 +46,12 @@ function AssignmentEditor() {
     
       <div className="w-100">
         <label htmlFor="wd-name" className="form-control border-0 ps-0">Assignment Name</label>
-        <input id="wd-name" className="rounded-1 border border-secondary p-1 w-100"  value={currAssignment.title} /><br /><br />
+        <input id="wd-name" className="rounded-1 border border-secondary p-1 w-100"  value={currAssignment ? currAssignment.title : ""} /><br /><br />
       </div>
       
       <div className="w-100" style={{height: 300}}>
         <textarea id="wd-description" className="w-100 p-2 h-100">
-          {currAssignment.description}
+          {currAssignment ? currAssignment.description : ""}
         </textarea>
       </div>
       
@@ -123,7 +149,7 @@ function AssignmentEditor() {
                 <label htmlFor="wd-due-date"><span className="fw-bold">Due</span></label>
               </div>
               <div className="input-group">
-                <input type="" id="wd-due-date" className="form-control" value={currAssignment.due_date}></input>
+                <input type="" id="wd-due-date" className="form-control" value={currAssignment ? currAssignment.due_date : ""}></input>
                 <div className="input-group-append bg-secondary align-self-center p-3">
                   <FaCalendarAlt/>
                 </div>
@@ -136,7 +162,7 @@ function AssignmentEditor() {
                     <label htmlFor="wd-available-from"><span className="fw-bold">Available from</span></label>
                   </div>
                   <div className="input-group">
-                    <input type="" id="wd-available-from" className="form-control" value={currAssignment.available_date}></input>
+                    <input type="" id="wd-available-from" className="form-control" value={currAssignment ? currAssignment.available_date : ""}></input>
                     <div className="input-group-append bg-secondary align-self-center p-3">
                       <FaCalendarAlt/>
                     </div>
@@ -148,7 +174,7 @@ function AssignmentEditor() {
                     <label htmlFor="wd-available-until"><span className="fw-bold">Until</span></label>
                   </div>
                   <div className="input-group">
-                    <input type="" id="wd-available-until" className="form-control" value={currAssignment.until_date}></input>
+                    <input type="" id="wd-available-until" className="form-control" value={currAssignment ? currAssignment.until_date : ""}></input>
                     <div className="input-group-append bg-secondary align-self-center p-3">
                       <FaCalendarAlt/>
                     </div>

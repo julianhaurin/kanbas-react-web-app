@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 
 import * as coursesClient from "../client";
 import * as modulesClient from "./client";
+import * as userClient from "../../Account/client";
 
 import ModulesControls from "./ModulesControls";
 import BsGripVertical from "./BsGripVertical";
@@ -66,15 +67,36 @@ function Modules() {
   //   setModules(modules.map((m) => (m._id === module._id ? module : m)));
   // };
   
+  // todo: copied from dashboard code, remove here
+  const [role, setRole] = useState<string>("");
+  
+  const fetchRole = async () => {
+    try {
+      const role = await userClient.findMyRole();
+      setRole(role);
+    } catch (error) {
+      console.log("ERROR fetching role")
+      console.error(error);
+    }
+  };
+  
+  useEffect(() => { fetchRole(); }, []);
+  
   
   return (
     <div>
-      <ModulesControls 
-        setModuleName={setModuleName} 
-        moduleName={moduleName} 
-        addModule={createModuleForCourse}
-      />
-      <br /><br /><br /><br />
+      
+        { (role === "FACULTY") &&
+          <div>
+          <ModulesControls 
+            setModuleName={setModuleName} 
+            moduleName={moduleName} 
+            addModule={createModuleForCourse}
+          />
+          <br /><br /><br /><br />
+          </div>
+        }
+      
       
       <ul id="wd-modules" className="list-group rounded-0">
         {modules.map((module: any) => (
@@ -98,9 +120,12 @@ function Modules() {
               )}
               
               {module.name}
+              {
+              (role === "FACULTY") &&
               <ModuleControlButtons moduleId={module._id}
                   deleteModule={(moduleId) => removeModule(moduleId)}
                   editModule={(moduleId) => dispatch(editModule(moduleId))} />
+              }
             </div>
             <ul className="wd-lessons list-group rounded-0">
                 
@@ -111,7 +136,10 @@ function Modules() {
                         <li className="wd-content-item list-group-item p-3 ps-1">
                           <span className="float-left"><BsGripVertical/></span>
                           <span className="">{lesson.name}</span>
-                          <LessonControlButtons/>
+                          {
+                            (role === "FACULTY") &&
+                            <LessonControlButtons/>
+                          }
                         </li>
                         // <li className="wd-content-item list-group-item p-3 ps-1">
                         //   <span className="float-left"><BsGripVertical/></span>

@@ -22,9 +22,18 @@ export default function Profile() {
       if (!currentUser) return navigate("/Kanbas/Account/Signin");
       setProfile(currentUser);
   }, [currentUser, navigate]);
+  
   const updateProfile = async () => {
+    
     const updatedProfile = await client.updateUser(profile);
+    console.log("UPDATING USER PROFILE: " + JSON.stringify(updatedProfile))
+    
+    console.log("getting new profile data")
+    let newProfile = await client.getCurrentUserData()
+    console.log("NEW USER PROFILE: " + JSON.stringify(newProfile))
+    
     dispatch(setCurrentUser(updatedProfile));
+    
   };
 
   
@@ -34,22 +43,24 @@ export default function Profile() {
       
       {profile && (
         <div className="d-flex flex-column form-group justify-content-center w-25">
-          <input defaultValue={profile.username} id="wd-username" className="form-control mb-2"
+          <input defaultValue={profile.username} id="wd-username" className="form-control mb-2" placeholder="Username"
                  onChange={(e) => setProfile({ ...profile, username:  e.target.value })}/>
-          <input defaultValue={profile.password} id="wd-password" className="form-control mb-2"
+          <input defaultValue={profile.password} id="wd-password" className="form-control mb-2" placeholder="Password"
                  onChange={(e) => setProfile({ ...profile, password:  e.target.value })}/>
-          <input defaultValue={profile.firstName} id="wd-firstname" className="form-control mb-2"
+          <input defaultValue={profile.firstName} id="wd-firstname" className="form-control mb-2" placeholder="First Name"
                  onChange={(e) => setProfile({ ...profile, firstName: e.target.value })}/>
-          <input defaultValue={profile.lastName} id="wd-lastname" className="form-control mb-2"
+          <input defaultValue={profile.lastName} id="wd-lastname" className="form-control mb-2" placeholder="Last Name"
                  onChange={(e) => setProfile({ ...profile, lastName:  e.target.value })}/>
-          <input defaultValue={profile.dob} id="wd-dob" className="form-control mb-2"
+          <input defaultValue={profile.dob} id="wd-dob" className="form-control mb-2" placeholder="DOB"
                  onChange={(e) => setProfile({ ...profile, dob: e.target.value })} type="date"/>
-          <input defaultValue={profile.email} id="wd-email" className="form-control mb-2"
+          <input defaultValue={profile.email} id="wd-email" className="form-control mb-2" placeholder="Email"
                  onChange={ (e) => setProfile({ ...profile, email: e.target.value })}/>
-          <select onChange={(e) => setProfile({ ...profile, role:  e.target.value })}
+          <select value={profile.role} onChange={(e) => setProfile({ ...profile, role:  e.target.value })} 
                  className="form-control mb-2" id="wd-role">
-            <option value="USER">User</option>            <option value="ADMIN">Admin</option>
-            <option value="FACULTY">Faculty</option>      <option value="STUDENT">Student</option>
+            <option value="USER">User</option>
+            <option value="ADMIN">Admin</option>
+            <option value="FACULTY">Faculty</option>
+            <option value="STUDENT">Student</option>
           </select>
           
           <button onClick={updateProfile} className="btn btn-primary w-100 mb-2"> Update </button>

@@ -24,7 +24,11 @@ function Dashboard({
     
     const fetchRole = async () => {
       try {
-        const role = await userClient.findMyRole();
+        let uid = userID
+        if (!uid) { uid = "current" }
+        const role = await userClient.findMyRoleWithID(uid);
+        console.log("GOT ROLE: " +  role)
+        console.log("current user: " + JSON.stringify(currentUser))
         setRole(role);
       } catch (error) {
         console.log("ERROR fetching role")
@@ -42,8 +46,9 @@ function Dashboard({
       }
     };
     
-    useEffect(() => { fetchRole(); }, [currentUser]);
     useEffect(() => { fetchId(); }, [currentUser]);
+    useEffect(() => { fetchRole(); }, [currentUser]);
+    
   
   // const [courses, setCourses] = useState<any[]>(db.courses);
   // const [course, setCourse] = useState<any>({
@@ -79,9 +84,7 @@ function Dashboard({
   const [displayEnrollmentOptions, setDisplayEnrollmentOptions] = useState<boolean>(false);
   
   const enrollStudent = async (userID : string, courseID : string) => {
-    console.log("test1")
     await courseClient.enrollUserInCourse(userID, courseID)
-    console.log("test2")
     updateCourses()
   }
   
@@ -94,10 +97,10 @@ function Dashboard({
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
       
-      <p>role : {role}</p>
+      <p>role : {currentUser.role}</p> {/* todo remove role if unnecessary */}
       <div>
         <h5>
-          { (role === "STUDENT") && 
+          { (currentUser.role === "STUDENT") && 
             <button 
               className="btn btn-primary" id="wd-add-new-course-click" 
               onClick={async () => { 
@@ -141,17 +144,25 @@ function Dashboard({
       
       <hr />
       
-      <h5>New Course
-          <button className="btn btn-primary float-end"
-                  id="wd-add-new-course-click"
-                  onClick={addNewCourse} > Add </button>
-          <button className="btn btn-warning float-end me-2"
-                onClick={updateCourse} id="wd-update-course-click">
-          Update
-        </button>
-      </h5><br />
-      <input    value={course.name} className="form-control mb-2" onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
-      <textarea value={course.description} className="form-control" onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
+      {
+        (currentUser.role === "FACULTY") &&
+        <div>
+        <h5>New Course
+            <button className="btn btn-primary float-end"
+                    id="wd-add-new-course-click"
+                    onClick={addNewCourse} > Add </button>
+            <button className="btn btn-warning float-end me-2"
+                  onClick={updateCourse} id="wd-update-course-click">
+            Update
+          </button>
+        </h5><br />
+        
+      
+        <input    value={course.name} className="form-control mb-2" onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
+        <textarea value={course.description} className="form-control" onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
+        
+        </div>
+      }
       
       <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr />
       
@@ -171,22 +182,28 @@ function Dashboard({
                       {course.description}
                     </p>
                     <button className="btn btn-primary"> Go </button>
-                    <button 
-                      onClick={(event) => {
-                        event.preventDefault();
-                        deleteCourse(course._id);
-                      }} className="btn btn-danger float-end"
-                      id="wd-delete-course-click">
-                      Delete
-                    </button>
-                    <button id="wd-edit-course-click"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        setCourse(course);
-                      }}
-                      className="btn btn-warning me-2 float-end" >
-                      Edit
-                    </button>
+                    
+                    {
+                      (currentUser.role === "FACULTY") &&
+                      <span>
+                        <button 
+                          onClick={(event) => {
+                            event.preventDefault();
+                            deleteCourse(course._id);
+                          }} className="btn btn-danger float-end"
+                          id="wd-delete-course-click">
+                          Delete
+                        </button>
+                        <button id="wd-edit-course-click"
+                          onClick={(event) => {
+                            event.preventDefault();
+                            setCourse(course);
+                          }}
+                          className="btn btn-warning me-2 float-end" >
+                          Edit
+                        </button>
+                      </span>
+                    }
                     
                   </div>
                 </Link>
