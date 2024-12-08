@@ -18,4 +18,3 @@ root.render(
 
 reportWebVitals();
 
-// todo: 3.4.7

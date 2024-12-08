@@ -10,11 +10,15 @@ import * as courseClient from "../Courses/client"
 import * as userClient from "../Account/client";
 
 function Dashboard({ 
-  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, updateCourses }: {
+  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, updateCourses, enrolling, setEnrolling, updateEnrollment }: {
   courses: any[]; course: any; setCourse: (course: any) => void;
   addNewCourse: () => void; deleteCourse: (course: any) => void;
   updateCourse: () => void; 
-  updateCourses: () => void; })
+  updateCourses: () => void;
+  enrolling: boolean; 
+  setEnrolling: (enrolling: boolean) => void;
+  updateEnrollment: (courseId: string, enrolled: boolean) => void;
+  })
   
   {
     
@@ -96,6 +100,9 @@ function Dashboard({
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
+      <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+          {enrolling ? "My Courses" : "All Courses"}
+        </button>
       
       <p>role : {currentUser.role}</p> {/* todo remove role if unnecessary */}
       <div>
@@ -176,7 +183,15 @@ function Dashboard({
                   <img alt="" src="/images/Dashboard/course1.jpg" width="100%" height={160} />
                   <div className="card-body">
                     <h5 className="wd-dashboard-course-title card-title">
-                      {course.name}
+                      {enrolling && (
+                        <button onClick={(event) => {
+                            event.preventDefault();
+                            updateEnrollment(course._id, !course.enrolled);
+                          }}
+                          className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
+                          {course.enrolled ? "Unenroll" : "Enroll"}
+                        </button>
+                      )}
                     </h5>
                     <p className="wd-dashboard-course-title card-text overflow-y-hidden" style={{ maxHeight: 100 }}>
                       {course.description}
