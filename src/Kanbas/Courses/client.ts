@@ -70,8 +70,8 @@ export const unenrollUserInCourse = async (userID : string, courseID : string) =
 export const createCourse = async (course: any) => {
   const { data } = await axiosWithCredentials.post(COURSES_API, course);
   return data;
- };
- 
+};
+
 
 
 

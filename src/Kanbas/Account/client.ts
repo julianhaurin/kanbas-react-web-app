@@ -44,13 +44,13 @@ export const findMyCourses = async () => {
 export const findMyRole = async () => {
   const { data } = await axiosWithCredentials.get(`${USERS_API}/current/role`);
   console.log("got role data: " + JSON.stringify(data))
-  return data;
+  return data.role;
 }
 
 export const findMyRoleWithID = async ( uid : string ) => {
   const { data } = await axiosWithCredentials.get(`${USERS_API}/${uid}/role`);
   console.log("got role with id data: " + JSON.stringify(data))
-  return data;
+  return data.role;
 }
 
 export const findMyID = async () => {

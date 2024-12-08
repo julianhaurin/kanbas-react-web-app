@@ -13,7 +13,7 @@ const modulesSlice = createSlice({
     },
     addModule: (state, { payload: module }) => {
       const newModule: any = {
-        _id: new Date().getTime().toString(),
+        // _id: new Date().getTime().toString(),  // ************* removed 3:12 12/8, make sure not needed here
         lessons: [],
         name: module.name,
         course: module.course,

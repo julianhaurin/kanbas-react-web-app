@@ -26,6 +26,7 @@ function Kanbas() {
   const findCoursesForUser = async () => {
     try {
       const courses = await userClient.findCoursesForUser(currentUser._id);
+      console.log("GOT COURSES FOR USER - " + JSON.stringify(courses))
       setCourses(courses);
     } catch (error) {
       console.error(error);
@@ -34,16 +35,16 @@ function Kanbas() {
   const fetchCourses = async () => {
     try {
       const allCourses = await courseClient.fetchAllCourses();
-      const enrolledCourses = await userClient.findCoursesForUser(
-        currentUser._id
-      );
-      const courses = allCourses.map((course: any) => {
-        if (enrolledCourses.find((c: any) => c._id === course._id)) {
-          return { ...course, enrolled: true };
-        } else {
-          return course;
-        }
-      });
+      const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
+      // is this necessary? not working ao 1:13 12/8
+      // const courses = allCourses.map((course: any) => {
+      //   if (enrolledCourses.find((c: any) => c._id === course._id)) {
+      //     return { ...course, enrolled: true };
+      //   } else {
+      //     return course;
+      //   }
+      // });
+      const courses = enrolling ? allCourses : enrolledCourses
       setCourses(courses);
     } catch (error) {
       console.error(error);
@@ -52,7 +53,6 @@ function Kanbas() {
 
   
   const [courses, setCourses] = useState<any[]>([]);
-  
   const { currentUser } = useSelector((state: any) => state.accountReducer);
   
   const fetchAllCourses = async () => {
@@ -78,12 +78,12 @@ function Kanbas() {
   );
   
   
-  const [course, setCourse] = useState<any>({
+  const [editingCourse, setEditingCourse] = useState<any>({
     _id: "1234", name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
   });
   const addNewCourse = async () => {
-    const newCourse = await courseClient.createCourse(course);
+    const newCourse = await courseClient.createCourse(editingCourse);
     setCourses([...courses, newCourse ]);
   };
   const deleteCourse = async (courseId: any) => {
@@ -91,11 +91,11 @@ function Kanbas() {
     setCourses(courses.filter((course) => course._id !== courseId));
   };
   const updateCourse = async () => {
-    await courseClient.updateCourse(course);
+    await courseClient.updateCourse(editingCourse);
     setCourses(
       courses.map((c) => {
-        if (c._id === course._id) {
-          return course;
+        if (c._id === editingCourse._id) {
+          return editingCourse;
         } else {
           return c;
         }
@@ -137,8 +137,8 @@ function Kanbas() {
                 <ProtectedRoute>
                   <Dashboard
                     courses={courses}
-                    course={course}
-                    setCourse={setCourse}
+                    editingCourse={editingCourse}
+                    setEditingCourse={setEditingCourse}
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}

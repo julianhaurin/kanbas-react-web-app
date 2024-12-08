@@ -3,21 +3,18 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-// import { useSelector } from "react-redux";
-// import * as db from "../Database";
-
 import * as courseClient from "../Courses/client"
 import * as userClient from "../Account/client";
 
 function Dashboard({ 
-  courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, updateCourses, enrolling, setEnrolling, updateEnrollment }: {
-  courses: any[]; course: any; setCourse: (course: any) => void;
-  addNewCourse: () => void; deleteCourse: (course: any) => void;
-  updateCourse: () => void; 
-  updateCourses: () => void;
-  enrolling: boolean; 
-  setEnrolling: (enrolling: boolean) => void;
-  updateEnrollment: (courseId: string, enrolled: boolean) => void;
+    courses, editingCourse, setEditingCourse, addNewCourse, deleteCourse, updateCourse, updateCourses, enrolling, setEnrolling, updateEnrollment }: {
+    courses: any[]; editingCourse: any; setEditingCourse: (course: any) => void;
+    addNewCourse: () => void; deleteCourse: (course: any) => void;
+    updateCourse: () => void; 
+    updateCourses: () => void;
+    enrolling: boolean; 
+    setEnrolling: (enrolling: boolean) => void;
+    updateEnrollment: (courseId: string, enrolled: boolean) => void;
   })
   
   {
@@ -26,16 +23,16 @@ function Dashboard({
     const [userID, setUserID] = useState<string>("");
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     
+    // console.log(courses.)
+    
     const fetchRole = async () => {
       try {
         let uid = userID
         if (!uid) { uid = "current" }
         const role = await userClient.findMyRoleWithID(uid);
-        console.log("GOT ROLE: " +  role)
         console.log("current user: " + JSON.stringify(currentUser))
         setRole(role);
       } catch (error) {
-        console.log("ERROR fetching role")
         console.error(error);
       }
     };
@@ -164,9 +161,9 @@ function Dashboard({
           </button>
         </h5><br />
         
-      
-        <input    value={course.name} className="form-control mb-2" onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
-        <textarea value={course.description} className="form-control" onChange={(e) => setCourse({ ...course, description: e.target.value }) } />
+        
+        <input    value={editingCourse.name} className="form-control mb-2" onChange={(e) => setEditingCourse({ ...editingCourse, name: e.target.value }) } />
+        <textarea value={editingCourse.description} className="form-control" onChange={(e) => setEditingCourse({ ...editingCourse, description: e.target.value }) } />
         
         </div>
       }
@@ -212,7 +209,7 @@ function Dashboard({
                         <button id="wd-edit-course-click"
                           onClick={(event) => {
                             event.preventDefault();
-                            setCourse(course);
+                            setEditingCourse(course);
                           }}
                           className="btn btn-warning me-2 float-end" >
                           Edit

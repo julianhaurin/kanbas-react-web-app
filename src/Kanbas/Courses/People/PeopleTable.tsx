@@ -28,8 +28,7 @@ function PeopleTable({ users = [] }: { users?: any[] }) {
               <td className="wd-full-name text-nowrap">
                 <Link to={`/Kanbas/Account/Users/${user._id}`} className="text-decoration-none">
                   <FaUserCircle className="me-2 fs-1 text-secondary" />
-                  <span className="wd-first-name">{user.firstName}</span>
-                  <span className="wd-last-name">{user.lastName}</span>
+                    <span className="wd-first-name">{user.firstName}</span> <span className="wd-last-name">{user.lastName}</span>
                 </Link>
               </td>
               <td className="wd-login-id">{user.loginId}</td>
