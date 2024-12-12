@@ -21,63 +21,51 @@ import Session from "./Account/Session";
 
 function Kanbas() {
   
-  // A6 5.3.2
+  // DASHBOARD COURSES
   const [enrolling, setEnrolling] = useState<boolean>(false);
   const findCoursesForUser = async () => {
     try {
+      if (!currentUser) { currentUser = await userClient.getCurrentUserData() }
       const courses = await userClient.findCoursesForUser(currentUser._id);
-      console.log("GOT COURSES FOR USER - " + JSON.stringify(courses))
-      setCourses(courses);
+      return courses;
     } catch (error) {
       console.error(error);
     }
+    return null
   };
+  const fetchAllCourses = async () => {
+    try {
+      const courses = await courseClient.fetchAllCourses();
+      return courses;
+    } catch (error) {
+      console.error(error);
+    }
+    return courses;
+  };
+  
   const fetchCourses = async () => {
     try {
-      const allCourses = await courseClient.fetchAllCourses();
-      const enrolledCourses = await userClient.findCoursesForUser(currentUser._id);
-      // is this necessary? not working ao 1:13 12/8
-      // const courses = allCourses.map((course: any) => {
-      //   if (enrolledCourses.find((c: any) => c._id === course._id)) {
-      //     return { ...course, enrolled: true };
-      //   } else {
-      //     return course;
-      //   }
-      // });
+      const allCourses = await fetchAllCourses();
+      const enrolledCourses = await findCoursesForUser();
       const courses = enrolling ? allCourses : enrolledCourses
       setCourses(courses);
+      setUserCourses(enrolledCourses)
     } catch (error) {
       console.error(error);
     }
  };
 
-  
+  const [userCourses, setUserCourses] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
-  const { currentUser } = useSelector((state: any) => state.accountReducer);
-  
-  const fetchAllCourses = async () => {
-    try {
-      const courses = await courseClient.fetchAllCourses();
-      setCourses(courses);
-    } catch (error) {
-      console.log("ERROR fetching courses")
-      console.error(error);
-    }
-  };
+  let { currentUser } = useSelector((state: any) => state.accountReducer);
   
   useEffect(() => { 
-    if (enrolling) {
-      fetchCourses();
-    } else {
-      findCoursesForUser();
-    }
- 
-    // fetchAllCourses(); 
+      fetchCourses()
     }, 
-    [currentUser]
+    [currentUser, enrolling]
   );
   
-  
+  // COURSES EDITING 
   const [editingCourse, setEditingCourse] = useState<any>({
     _id: "1234", name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
@@ -85,10 +73,12 @@ function Kanbas() {
   const addNewCourse = async () => {
     const newCourse = await courseClient.createCourse(editingCourse);
     setCourses([...courses, newCourse ]);
+    setUserCourses(await findCoursesForUser())
   };
   const deleteCourse = async (courseId: any) => {
     await courseClient.deleteCourse(courseId); // const status = 
     setCourses(courses.filter((course) => course._id !== courseId));
+    setUserCourses(await findCoursesForUser())
   };
   const updateCourse = async () => {
     await courseClient.updateCourse(editingCourse);
@@ -101,14 +91,18 @@ function Kanbas() {
         }
       })
     );
+    setUserCourses(await findCoursesForUser())
+    
   };
   
   const updateEnrollment = async (courseId: string, enrolled: boolean) => {
+    console.log("updating enrollment: " + enrolled + " : " + courseId)
     if (enrolled) {
       await userClient.enrollIntoCourse(currentUser._id, courseId);
     } else {
       await userClient.unenrollFromCourse(currentUser._id, courseId);
     }
+    fetchCourses()
     setCourses(
       courses.map((course) => {
         if (course._id === courseId) {
@@ -118,6 +112,7 @@ function Kanbas() {
         }
       })
     );
+    setUserCourses(await findCoursesForUser())
   };
  
   
@@ -142,9 +137,10 @@ function Kanbas() {
                     addNewCourse={addNewCourse}
                     deleteCourse={deleteCourse}
                     updateCourse={updateCourse}
-                    updateCourses={fetchAllCourses}
+                    updateUserCourses={fetchCourses}
                     enrolling={enrolling} setEnrolling={setEnrolling}
                     updateEnrollment={updateEnrollment}
+                    userCourses={userCourses}
                   />
                 </ProtectedRoute>}/>
               <Route path="/Courses/:cid/*" element={<ProtectedRoute><Courses courses={courses} /></ProtectedRoute> } />

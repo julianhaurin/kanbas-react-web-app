@@ -24,11 +24,11 @@ function Signin() {
 
   return (
     <div id="wd-signin-screen">
-    
+      
       <h3>Sign in</h3>
       
       <div className="d-flex flex-column form-group justify-content-center w-25">
-      
+        
         <input defaultValue={credentials.username}
                onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                className="form-control mb-2" placeholder="username" id="wd-username" />
@@ -36,11 +36,8 @@ function Signin() {
                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                className="form-control mb-2" placeholder="password" type="password" id="wd-password" />
         <button onClick={signin} id="wd-signin-btn" className="btn btn-primary w-100" > Sign in </button>
-
         
       </div>
-      
-      <Link  id="wd-signup-link" to="/Kanbas/Account/Signup">Sign up</Link>
       
     </div>
 );}

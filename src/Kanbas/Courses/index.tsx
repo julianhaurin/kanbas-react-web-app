@@ -7,6 +7,7 @@ import Modules from "./Modules";
 import Quizzes from "./Quizzes";
 import QuizDetails from "./Quizzes/QuizDetails";
 import QuizEditor from "./Quizzes/QuizEditor";
+import Quiz from "./Quizzes/Quiz";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import PeopleTable from "./People/PeopleTable";
@@ -38,6 +39,7 @@ function Courses({ courses }: { courses: any[]; }) {
             <Route path="Quizzes" element={<Quizzes />} />
             <Route path="Quizzes/:qid" element={<QuizDetails />} />
             <Route path="Quizzes/:qid/Editor" element={<QuizEditor />} />
+            <Route path="Quizzes/:qid/Quiz" element={<Quiz />} />
             
             <Route path="test" element={<AssignmentEditor />} />
             

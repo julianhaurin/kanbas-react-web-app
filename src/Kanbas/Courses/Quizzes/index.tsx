@@ -7,9 +7,10 @@ import { Link } from "react-router-dom";
 import * as quizzesClient from "./client"
 import * as userClient from "../../Account/client";
 
-import QuizControls from "./QuizControls";
+// import QuizControls from "./QuizControls";
 
 import { FaGripVertical, FaBan, FaCheck } from "react-icons/fa";
+import { FaPlus, FaEllipsisVertical, FaPencil, FaDeleteLeft } from "react-icons/fa6";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 
 function Quizzes() {
@@ -32,7 +33,6 @@ function Quizzes() {
   
   // QUIZZES
   const [quizzes, setQuizzes] = useState<any[]>([]);
-  // const dispatch = useDispatch(); // ?????
   
   useEffect(() => {
     async function fetchQuizzes() {
@@ -41,6 +41,51 @@ function Quizzes() {
     };
     fetchQuizzes();
   }, [cid]);
+  
+  const updateQuizzes = async () => {
+    const gotQuizzes = await quizzesClient.fetchQuizzesForCourse(cid as string);
+    setQuizzes(gotQuizzes);
+  }
+  
+  const createQuiz = async () => {
+    const defaultQuiz = {
+      name: "New Quiz",
+      description: "New Description",
+      published: false,
+      questions: new Array<any>,
+      course: cid,
+      
+      type: "Graded Quiz",
+      points: 0,
+      group: "Quizzes",
+      timeLimitMins: 20,
+      hasMultipleAttempts: false,
+      numAttempts: 1,
+      showCorrectAnswers: true,
+      accessCode: "",
+      oneQuestionAtATime: true,
+      isWebcamRequired: false,
+      lockQuestionsAfterAnswering: true,
+      dueDate: "",
+      availableDate: "",
+      untilDate: "",
+      shuffleAnswers: true,
+    }
+    await quizzesClient.createQuiz(defaultQuiz);
+    await updateQuizzes();
+  }
+  
+  const deleteQuiz = async (qid : string) => {
+    await quizzesClient.deleteQuiz(qid);
+    await updateQuizzes();
+  }
+  
+  const togglePublished = async (qid : string) => {
+    let quizData = await quizzesClient.fetchQuizByID(qid as string);
+    quizData.published = !quizData.published
+    await quizzesClient.updateQuiz(qid as string, quizData)
+    await updateQuizzes();
+  }
   
   return(
     <div>
@@ -54,7 +99,12 @@ function Quizzes() {
       <div>
         {(role === "FACULTY") &&
           <div>
-            <QuizControls/>
+            <div className="text-nowrap">
+              <button onClick={createQuiz} id="wd-add-module-btn" className="btn btn-lg btn-danger me-1 float-end">
+                <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
+                Quiz
+              </button>
+            </div>
             <br /><br /><br /><br />
           </div>
         }
@@ -76,7 +126,7 @@ function Quizzes() {
         <div>
           
         <ul id="wd-modules" className="list-group rounded-0">
-          {quizzes.map((quiz: any) => (
+          {quizzes.filter((quiz: any) => role !== "FACULTY" ? quiz.published : true).map((quiz: any) => (
             <li className="wd-module list-group-item p-0 my-0 fs-5 border-gray">
               <div className="wd-title p-3 ps-2 bg-secondary">
                 
@@ -87,9 +137,23 @@ function Quizzes() {
                 
                 
                 {/* Control Buttons */}
-                <span className="float-end">
-                  {quiz.published ? <FaCheck/> : <FaBan/>}
-                </span>
+                {role === "FACULTY" &&
+                  <span className="float-end">
+                    <button className="mx-2">
+                      <FaEllipsisVertical/>
+                    </button>
+                    <button className="mx-2">
+                      <Link to={`/Kanbas/Courses/${cid}/Quizzes/${quiz._id}`}><FaPencil/></Link>
+                    </button>
+                    <button className="mx-2" onClick={() => deleteQuiz(quiz._id)}>
+                      <FaDeleteLeft/>
+                    </button>
+                    <button onClick={() => { togglePublished(quiz._id) }}>
+                      {quiz.published ? <FaCheck/> : <FaBan/>}
+                    </button>
+                  </span>
+                }
+                
                 
               </div>
             </li>

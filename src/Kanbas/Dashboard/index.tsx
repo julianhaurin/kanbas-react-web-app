@@ -7,23 +7,21 @@ import * as courseClient from "../Courses/client"
 import * as userClient from "../Account/client";
 
 function Dashboard({ 
-    courses, editingCourse, setEditingCourse, addNewCourse, deleteCourse, updateCourse, updateCourses, enrolling, setEnrolling, updateEnrollment }: {
+    courses, editingCourse, setEditingCourse, addNewCourse, deleteCourse, updateCourse, updateUserCourses, enrolling, setEnrolling, updateEnrollment, userCourses }: {
     courses: any[]; editingCourse: any; setEditingCourse: (course: any) => void;
     addNewCourse: () => void; deleteCourse: (course: any) => void;
     updateCourse: () => void; 
-    updateCourses: () => void;
+    updateUserCourses: () => Promise<void>;
     enrolling: boolean; 
     setEnrolling: (enrolling: boolean) => void;
     updateEnrollment: (courseId: string, enrolled: boolean) => void;
+    userCourses: any[]
   })
-  
   {
     
     const [role, setRole] = useState<string>("");
     const [userID, setUserID] = useState<string>("");
     const { currentUser } = useSelector((state: any) => state.accountReducer);
-    
-    // console.log(courses.)
     
     const fetchRole = async () => {
       try {
@@ -49,81 +47,54 @@ function Dashboard({
     
     useEffect(() => { fetchId(); }, [currentUser]);
     useEffect(() => { fetchRole(); }, [currentUser]);
-    
   
-  // const [courses, setCourses] = useState<any[]>(db.courses);
-  // const [course, setCourse] = useState<any>({
-  //   _id: "0", name: "New Course", number: "New Number",
-  //   startDate: "2023-09-10", endDate: "2023-12-15",
-  //   image: "/images/reactjs.jpg", description: "New Description"
-  // });
+  // // TODO: IS THIS STILL NECESSARY? 
+  // const [allCourses, setAllCourses] = useState<any>(courseClient.fetchAllCourses())
+  // const [displayEnrollmentOptions, setDisplayEnrollmentOptions] = useState<boolean>(false);
   
-  // const addNewCourse = () => {
-  //   const newCourse = { ...course,
-  //                       _id: new Date().getTime().toString() };
-  //   setCourses([...courses, newCourse ]);
-  // };
-  // const deleteCourse = (courseId: string) => {
-  //   setCourses(courses.filter((course) => course._id !== courseId));
-  // };
-  // const updateCourse = () => {
-  //   setCourses(
-  //     courses.map((c) => {
-  //       if (c._id === course._id) {
-  //         return course;
-  //       } else {
-  //         return c;
-  //       }
-  //     })
-  //   );
-  // };
+  // const enrollStudent = async (userID : string, courseID : string) => {
+  //   await courseClient.enrollUserInCourse(userID, courseID)
+  //   updateUserCourses()
+  // }
   
-  // const { currentUser } = useSelector((state: any) => state.accountReducer);
-  // const { enrollments } = db;
-  
-  const [allCourses, setAllCourses] = useState<any>(courseClient.fetchAllCourses())
-  const [displayEnrollmentOptions, setDisplayEnrollmentOptions] = useState<boolean>(false);
-  
-  const enrollStudent = async (userID : string, courseID : string) => {
-    await courseClient.enrollUserInCourse(userID, courseID)
-    updateCourses()
-  }
-  
-  const unenrollStudent = async (userID : string, courseID : string) => {
-    await courseClient.unenrollUserInCourse(userID, courseID)
-    updateCourses()
-  }
+  // const unenrollStudent = async (userID : string, courseID : string) => {
+  //   await courseClient.unenrollUserFromCourse(userID, courseID)
+  //   updateUserCourses()
+  // }
 
   return (
     <div id="wd-dashboard">
       <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
-      <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary" >
+      {role && (role === "STUDENT" || role === "FACULTY") &&
+        (<button onClick={async () => {setEnrolling(!enrolling); await updateUserCourses()}} className="float-end btn btn-primary m-2" >
           {enrolling ? "My Courses" : "All Courses"}
-        </button>
+        </button>)
+      }
+      
       
       <p>role : {currentUser.role}</p> {/* todo remove role if unnecessary */}
       <div>
-        <h5>
+        
+        {/* ENROLLMENTS */}
+        {/* <h5>
           { (currentUser.role === "STUDENT") && 
             <button 
               className="btn btn-primary" id="wd-add-new-course-click" 
               onClick={async () => { 
-                setAllCourses(await courseClient.fetchAllCourses()); 
+                setAllCourses(await fetchAllCourses()); 
                 setDisplayEnrollmentOptions(!displayEnrollmentOptions); 
                 console.log(displayEnrollmentOptions) }}>
               Enrollments 
             </button> }
-        </h5>
+        </h5> */}
         
-        <div>
+        {/* <div>
           {displayEnrollmentOptions && Array.from(allCourses).map((course : any) => (
             <div>
               <span className="fs-3 my-4">{course.name}</span>
-              
               {
                 courses.some(x => x._id === course._id) ? 
                 <span>
-                {/* hacky, fix */}
                   <div className="btn btn-danger float-end" onClick={() => { unenrollStudent(userID, course._id); setAllCourses(courseClient.fetchAllCourses()); setDisplayEnrollmentOptions(!displayEnrollmentOptions) }}>
                     Unenroll
                   </div>
@@ -135,14 +106,9 @@ function Dashboard({
                   </div>
                 </span>
               }
-              <span>
-                
-              </span>
-              
             </div>
-            
           ))}
-        </div>
+        </div> */}
         
       </div>
       
@@ -183,10 +149,11 @@ function Dashboard({
                       {enrolling && (
                         <button onClick={(event) => {
                             event.preventDefault();
-                            updateEnrollment(course._id, !course.enrolled);
+                            let isEnrolled = userCourses.findIndex((c : any) => c._id === course._id) >= 0
+                            updateEnrollment(course._id, !isEnrolled);
                           }}
-                          className={`btn ${ course.enrolled ? "btn-danger" : "btn-success" } float-end`} >
-                          {course.enrolled ? "Unenroll" : "Enroll"}
+                          className={`btn ${ userCourses.findIndex((c : any) => c._id === course._id) >= 0 ? "btn-danger" : "btn-success" } float-end`} >
+                          {userCourses.findIndex((c : any) => c._id === course._id) >= 0 ? "Unenroll" : "Enroll"}
                         </button>
                       )}
                     </h5>
