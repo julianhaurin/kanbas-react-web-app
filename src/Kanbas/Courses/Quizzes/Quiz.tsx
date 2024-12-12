@@ -54,7 +54,7 @@ function Quiz() {
             mc_answerIdx: 0,
             mc_answerID: "",
             tf_answer: false,
-            fitb_answer: ""
+            fitb_answers: new Array<any>
           }
         })
       setQuizAnswers(initQuizAnswers)
@@ -79,8 +79,21 @@ function Quiz() {
     console.log("handling change: " + name + " : " + value + " : " + JSON.stringify(quizAnswers))
     setQuizAnswers((prevData : Array<any>) => (
       prevData.map((question : any) => {
+        console.log("1")
         if (question.questionID === name) {
-          question.mc_answerID = value;
+          if (question.questionType === "Multiple Choice") {
+            question.mc_answerID = value;
+            console.log("mc setting " + name + " to " + value)
+            
+          } else if (question.questionType === "True False") {
+            question.tf_answer = value;
+            console.log("tf setting " + name + " to " + value)
+            
+          } else if (question.questionType === "Fill In The Blank") {
+            question.fitb_answer = value;
+            console.log("fitb setting " + name + " to " + value)
+          }
+          
         }
         return question
       })
@@ -146,12 +159,19 @@ function Quiz() {
                   (
                     <div className="mx-4">
                       {/* Multiple Choice Options */}
+                      {/* question id: {JSON.stringify(ques._id)}
+                      chosen: {ques.mc_answerID} */}
                       <div>
                         {ques.mc_choices && ques.mc_choices.map((choice : any) => 
                           (
                             <div>
+                              {/* id: {choice._id} */}
                               {/* TODO: FIX IDS */}
-                              <input type="radio" id={choice._id} name={ques._id} value={choice._id} onClick={handleChange}></input>
+                              {/* checked={ques.mc_answerID === choice._id} */}
+                              <input type="radio" id={choice._id} name={ques._id} value={choice._id} 
+                                checked={quizAnswers && quizAnswers.find((anw : any) => anw.questionID === ques._id) && quizAnswers.find((anw : any) => anw.questionID === ques._id).mc_answerID === choice._id} 
+                                onClick={handleChange}>
+                              </input>
                               <label className="m-2" htmlFor={choice._id}>{choice.choiceDescription}</label>
                             </div>
                           )
@@ -164,9 +184,13 @@ function Quiz() {
                 {ques.questionType === "True False" &&
                   (
                     <div>
-                      <input type="radio" id="trueID" name="tf_choice" value="true" onClick={handleChange}></input>
+                      <input type="radio" id="trueID" name={ques._id} value="true" onClick={handleChange}
+                        checked={quizAnswers && quizAnswers.find((anw : any) => anw.questionID === ques._id).tf_answer === "true"}>
+                      </input>
                       <label className="m-2" htmlFor="trueID">True</label>
-                      <input type="radio" id="falseID" name="tf_choice" value="false" onClick={handleChange}></input>
+                      <input type="radio" id="falseID" name={ques._id} value="false" onClick={handleChange}
+                        checked={quizAnswers && quizAnswers.find((anw : any) => anw.questionID === ques._id).tf_answer === "false"}>
+                      </input>
                       <label className="m-2" htmlFor="falseID">False</label>
                     </div>
                   )
@@ -175,8 +199,10 @@ function Quiz() {
                 {ques.questionType === "Fill In The Blank" &&
                   (
                     <div>
-                      <input type="input" id={ques._id} name={ques._id} value={"test"} onClick={handleChange}></input>
-                      <label className="m-2" htmlFor={ques._id}>{ques.choiceDescription}</label>
+                      <input type="input" id="fitb" name={ques._id} onChange={handleChange}
+                        value={quizAnswers && quizAnswers.find((anw : any) => anw.questionID === ques._id).fitb_answer}
+                      ></input>
+                      <label className="m-2" htmlFor="fitb">{ques.choiceDescription}</label>
                     </div>
                   )
                 }

@@ -6,11 +6,12 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useParams, useNavigate } from "react-router";
 
 import * as client from "../../Account/client";
+import * as coursesClient from "../../Courses/client"
 
 // Popup Account Description and Editor within PeopleTable
 export default function PeopleDetails() {
   
-  const { uid } = useParams();
+  const { cid, uid } = useParams();
   const [user, setUser] = useState<any>({});
   const navigate = useNavigate();
   
@@ -41,6 +42,16 @@ export default function PeopleDetails() {
     setEditing(false);
     // navigate(-1);
   };
+  
+  // const [courseUsers, setCourseUsers] = useState(new Array<any>)
+  // useEffect(()=> {
+  //   const fetchUsers = async () => {
+  //     const cUsers = await coursesClient.findUsersForCourse(cid as string);
+  //     setCourseUsers(cUsers)
+  //     // console.log("USERS: " + JSON.stringify(cUsers))
+  //   }
+  //   fetchUsers()
+  // }, [cid]);
 
   
   if (!uid) return null;
@@ -103,6 +114,16 @@ export default function PeopleDetails() {
         <b>Section:</b>         <span className="wd-section">       {user.section}      </span> <br/>
         <b>Total Activity:</b>  <span className="wd-total-activity">{user.totalActivity}</span>
       </div>
+      
+      {/* <div>
+        {courseUsers && courseUsers.map((user : any) => {
+          return (
+            <div>
+              {user.username}
+            </div>
+          )
+        })}
+      </div> */}
       
       <hr />
       
